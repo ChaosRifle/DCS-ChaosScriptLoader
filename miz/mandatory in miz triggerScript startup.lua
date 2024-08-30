@@ -2,6 +2,3 @@
 --this also will set the save data names so reboots work fine, and wont conflict with other ops/missions ongoing.
 
 MissionName = %MissionName% --choose your name of choice, and set the config name to match.
-
-
---FilePath = the position on disk for your 'scripts' folder containing everything. This should be defined by ChaosScriptLoader as a dependancy. If you are not using ChaosScriptLoader, you will need to create define this too.
