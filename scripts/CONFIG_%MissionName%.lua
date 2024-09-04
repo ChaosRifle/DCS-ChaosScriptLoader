@@ -9,8 +9,6 @@
 
 
 
-----------------------------------------------------------------Unit AutoPopulate----------------------------------------------------------------
------------------------------------------------------------------Required Config-----------------------------------------------------------------
 
 ----------------------------------------------------------ChaosScriptLoader Post-Config----------------------------------------------------------
 -- put the file names of the scripts desired to load below. Load Order (for dependancies) is in the order you place them. ie: {TableIO.lua, ChaosTools.lua} will make TableIO load first.
