@@ -87,41 +87,42 @@ if [ -d "./scripts" ]; then
     echo 'atempting merge..'
     MERGE_FILE="$MERGE_DIR/scripts/CONFIG_%MissionName%.lua"
     INJECT_FILE="$REPO_DIR/scripts/CONFIG_%MissionName%.lua"
-    
-    STARTLINE=`head -n1 "$INJECT_FILE"`
-    echo 'detected startline:'
-    echo "$STARTLINE"
-    echo
-    
-    ENDLINE=`echo $STARTLINE | sed 's/---- /-- End /'`
-    ENDLINE=`echo $ENDLINE | sed 's/ ----/ --/'`
-    echo 'detected endline:'
-    echo "$ENDLINE"
-    echo
-    
-    
-    cp $MERGE_FILE ./startfile.lua
-    sed -i "0,/$STARTLINE/!d" ./startfile.lua
-    sed -i "s/$STARTLINE//" ./startfile.lua
-    head -n -1 ./startfile.lua > temp.lua ; mv temp.lua ./startfile.lua     #trim white space that will be added by cat
-    
-    cp $MERGE_FILE ./endfile.lua
-    sed -i -ne "0,/^$ENDLINE/{s/^$ENDLINE//p;d;}" -e p ./endfile.lua
-    tail -n +2 ./endfile.lua > temp.lua ; mv temp.lua ./endfile.lua         #trim white space that will be added by cat
 
-    echo 'merging file..'
-    cat ./startfile.lua  $INJECT_FILE ./endfile.lua > $OUTPUT_DIR/scripts/CONFIG_%MissionName%.lua
-   
+    STARTLINE='----------------------------------------------------------------- Script Config -----------------------------------------------------------------' #`head -n1 "$INJECT_FILE"`
+    ENDLINE='--------------------------------------------------------- ChaosScriptLoader Post-Config ---------------------------------------------------------' #`echo $STARTLINE | sed 's/---- /-- End /'`
+
+    cp $MERGE_FILE ./contents1.lua
+    sed -i -ne "0,/^$STARTLINE/{s/^$STARTLINE//p;d;}" -e p ./contents1.lua #everything after a point
+    tail -n +2 ./contents1.lua > temp.lua ; mv temp.lua ./contents1.lua         #trim white space that will be added by cat
+
+    cp ./contents1.lua ./contents2.lua
+    sed -i "0,/$ENDLINE/!d" ./contents2.lua #all up to point
+    sed -i "s/$ENDLINE//" ./contents2.lua
+    head -n -1 ./contents2.lua > temp.lua ; mv temp.lua ./contentsfinal.lua     #trim white space that will be added by cat
+
+    cp $INJECT_FILE ./header.lua
+    sed -i "0,/$STARTLINE/!d" ./header.lua #all up to point
+    #sed -i "s/$STARTLINE//" ./header.lua
+    #head -n -1 ./header.lua > temp.lua ; mv temp.lua ./header.lua     #trim white space that will be added by cat
+
+    cp $INJECT_FILE ./footer.lua
+    sed -i -ne "0,/^$ENDLINE/{s/^$ENDLINE//p;d;}" -e p ./footer.lua #everything after a point
+    tail -n +2 ./footer.lua > temp.lua ; mv temp.lua ./footer.lua         #trim white space that will be added by cat
+    echo $ENDLINE > ./footerlineone.lua
+    cat ./footerlineone.lua ./footer.lua > temp.lua ; mv temp.lua ./footer.lua
+    rm -rf ./footerlineone.lua
+
+    cat ./header.lua ./contentsfinal.lua ./footer.lua > $OUTPUT_DIR/scripts/CONFIG_%MissionName%.lua
+
+
     echo ===========================================================================
-    echo ./startfile.lua
-    echo $INJECT_FILE
-    echo ./endfile.lua
-    echo 'merge completed'
-    echo ===========================================================================
-     
     echo 'cleaning up savestate files'
-    rm -rf ./startfile.lua
-    rm -rf ./endfile.lua
+
+    rm -rf ./contents1.lua
+    rm -rf ./contents2.lua
+    rm -rf ./contentsfinal.lua
+    rm -rf ./header.lua
+    rm -rf ./footer.lua
   fi
 fi
 
