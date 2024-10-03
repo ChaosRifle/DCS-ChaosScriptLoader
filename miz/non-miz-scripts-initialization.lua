@@ -1,26 +1,18 @@
 --to the guy lurking around here trying to learn from my stuff like I did with grimes work, just come ask me. -Chaos
 
-
-FilePath = "W:/Saved Games/DCS.openbeta/Missions/scripts/"                                       --local path
-local filePathServer = "C:/Users/chaosrifle/Saved Games/DCS.openbeta_server/Missions/scripts/"   --server release path
-local filePathServerDev = "C:/Users/ChaosServ/Saved Games/DCS.release_server/Missions/scripts/"  --server dev path
+lfs.writedir()
+FilePath = lfs.writedir() .. "Missions/scripts/"           --scripts environment path relative to savedgames. this resolves to Driveletter:\Users\<username>\Saved Games\DCS.openbeta\Missions\scripts\
 
 env.info("Chaos Log: Loading scripts in NonMiz init", 3)
 
 if lfs and lfs.attributes then
     env.info('Chaos Log: lfs attributes exists, continuing script init')
 
-    if lfs.attributes(filePathServer, 'size') then
-        FilePath = filePathServer
-        env.info('Chaos Log: Server environment detected')
-    elseif lfs.attributes(filePathServerDev, 'size') then
-        FilePath = filePathServerDev
-        env.info('Chaos Log: Dev Server environment detected')
-    elseif lfs.attributes(FilePath, 'size') then
-        env.info('Chaos Log: Dev Client environment detected')
+    if lfs.attributes(FilePath, 'size') then
+        env.info('Chaos Log: Environment detected')
     else
-        env.info('Chaos Error: Environment could not be determined.. Check filepaths for init script or script storage location')
-        trigger.action.outText("Environment could not be determined.. Check filepaths for init script or script storage location", 10000)
+        env.error('Chaos Error: Environment could not be determined.. Check filepaths for init script, or script storage location')
+        trigger.action.outText("Environment could not be determined.. Check filepaths for init script, or script storage location", 10000)
     end
 
 else
