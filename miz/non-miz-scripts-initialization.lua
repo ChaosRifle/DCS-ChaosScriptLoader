@@ -25,3 +25,5 @@ for i = 1, #fList do
     env.info("Chaos Log: Loading: " .. fList[i])
     assert(loadfile(FilePath .. fList[i]))()
 end
+
+env.info("ChaosScriptLoader: scriptloader complete.")
