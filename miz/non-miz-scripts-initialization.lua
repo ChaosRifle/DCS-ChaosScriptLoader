@@ -1,5 +1,5 @@
 --to the guy lurking around here trying to learn from my stuff like I did with grimes work, just come ask me. -Chaos
-local version = 1.1.1
+local version = '1.1.2'
 
 FilePath = lfs.writedir() .. [[Missions\scripts\]]                                                    --standard path
 local filePathAlternate = [[C:\Users\chaosrifle\Saved Games\DCS.openbeta_server\scripts\]]   --alternate path
@@ -33,3 +33,4 @@ for i = 1, #fList do
     env.info("Chaos Log: Loading: " .. fList[i])
     assert(loadfile(FilePath .. fList[i]))()
 end
+
